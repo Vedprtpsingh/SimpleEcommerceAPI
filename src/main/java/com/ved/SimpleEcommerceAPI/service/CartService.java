@@ -56,7 +56,9 @@ public class CartService {
             item.setQuantity(item.getQuantity() + quantity);
             cartItemRepository.save(item);
         } else {
-            CartItem newItem = new CartItem(productId, product, quantity);
+            CartItem newItem = new CartItem();
+            newItem.setProduct(product);
+            newItem.setQuantity(quantity);
             cartItemRepository.save(newItem);
             items.add(newItem);
         }
@@ -97,14 +99,5 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public void clearCart(Long userId) {
-        Cart cart = getCartByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        List<CartItem> items = cart.getItems();
-        for (CartItem item : items) {
-            cartItemRepository.delete(item);
-        }
-        items.clear();
-        cart.setItems(items);
-        cartRepository.save(cart);
-    }
+
 }

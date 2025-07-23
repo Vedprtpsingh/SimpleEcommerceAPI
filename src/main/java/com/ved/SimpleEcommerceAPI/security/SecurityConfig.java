@@ -29,17 +29,17 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/shop", "/home", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+            .requestMatchers("/", "/shop", "/login", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
             .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+            .requestMatchers("/admin").hasRole("ADMIN")
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable()) // ❗ This disables default /login page
-        .httpBasic(httpBasic -> httpBasic.disable()) // ❗ Disable basic auth too
-        .headers(headers -> headers.frameOptions().disable());
+        .httpBasic(httpBasic -> httpBasic.disable()); // ❗ Disable basic auth too
 
     return http.build();
 }

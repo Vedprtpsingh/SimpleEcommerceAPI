@@ -39,7 +39,11 @@ public class OrderService {
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
 
-        Order order = new Order(userId, user, items, LocalDateTime.now(), totalAmount);
+        Order order = new Order();
+        order.setUser(user);
+        order.setItems(items);
+        order.setOrderDate(LocalDateTime.now());
+        order.setTotalAmount(totalAmount);
         Order savedOrder = orderRepository.save(order);
 
         // Clear the cart after order creation

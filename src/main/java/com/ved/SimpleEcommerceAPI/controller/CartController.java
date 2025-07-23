@@ -20,8 +20,8 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<Cart> getCart(Authentication authentication) {
-        String username = authentication.getName();
-        Long userId = userService.findByUsername(username).map(user -> user.getId()).orElse(null);
+        String email = authentication.getName();
+        Long userId = userService.findByEmail(email).map(user -> user.getId()).orElse(null);
         if (userId == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -34,8 +34,8 @@ public class CartController {
     public ResponseEntity<Cart> addItemToCart(Authentication authentication,
                                               @RequestParam Long productId,
                                               @RequestParam int quantity) {
-        String username = authentication.getName();
-        Long userId = userService.findByUsername(username).map(user -> user.getId()).orElse(null);
+        String email = authentication.getName();
+        Long userId = userService.findByEmail(email).map(user -> user.getId()).orElse(null);
         if (userId == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -47,8 +47,8 @@ public class CartController {
     public ResponseEntity<Cart> updateItemQuantity(Authentication authentication,
                                                    @RequestParam Long productId,
                                                    @RequestParam int quantity) {
-        String username = authentication.getName();
-        Long userId = userService.findByUsername(username).map(user -> user.getId()).orElse(null);
+        String email = authentication.getName();
+        Long userId = userService.findByEmail(email).map(user -> user.getId()).orElse(null);
         if (userId == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -59,8 +59,8 @@ public class CartController {
     @DeleteMapping("/remove")
     public ResponseEntity<Cart> removeItemFromCart(Authentication authentication,
                                                   @RequestParam Long productId) {
-        String username = authentication.getName();
-        Long userId = userService.findByUsername(username).map(user -> user.getId()).orElse(null);
+        String email = authentication.getName();
+        Long userId = userService.findByEmail(email).map(user -> user.getId()).orElse(null);
         if (userId == null) {
             return ResponseEntity.badRequest().build();
         }

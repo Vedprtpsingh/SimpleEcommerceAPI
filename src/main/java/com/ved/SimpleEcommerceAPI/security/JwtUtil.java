@@ -37,14 +37,21 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
-        return createToken(username);
+    public String generateToken(String username, java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> authorities) {
+        return createToken(username, authorities);
     }
 
-    private String createToken(String subject) {
+    private String createToken(String subject, java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> authorities) {
         long expirationTime = 1000 * 60 * 60 * 10; // 10 hours
+        
+        // Extract roles from authorities
+        java.util.List<String> roles = authorities.stream()
+                .map(authority -> authority.getAuthority().replace("ROLE_", ""))
+                .collect(java.util.stream.Collectors.toList());
+        
         return Jwts.builder()
                 .setSubject(subject)
+                .claim("roles", roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

@@ -32,8 +32,8 @@ public class HomeController {
         model.addAttribute("products", products);
 
         if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            Optional<Long> userIdOpt = userService.findByUsername(username).map(user -> user.getId());
+            String email = authentication.getName();
+            Optional<Long> userIdOpt = userService.findByEmail(email).map(user -> user.getId());
             if (userIdOpt.isPresent()) {
                 Optional<Cart> cartOpt = cartService.getCartByUserId(userIdOpt.get());
                 model.addAttribute("cart", cartOpt.orElse(new Cart()));
