@@ -44,7 +44,6 @@ public class JwtUtil {
     private String createToken(String subject, java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> authorities) {
         long expirationTime = 1000 * 60 * 60 * 10; // 10 hours
         
-        // Extract roles from authorities
         java.util.List<String> roles = authorities.stream()
                 .map(authority -> authority.getAuthority().replace("ROLE_", ""))
                 .collect(java.util.stream.Collectors.toList());
